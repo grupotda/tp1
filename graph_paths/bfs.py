@@ -3,10 +3,8 @@ from digraph import Digraph
 
 
 class Bfs:
-    def __init__(self, graph, root, dest):
-        self.graph = graph
+    def __init__(self, graph, root, dst):
         self.root = root
-        self.dest = dest
 
         self.visit = []
         self.paths = {}
@@ -16,7 +14,8 @@ class Bfs:
 
         q.queue(root)
         self.distances[root] = 0
-        while q:
+        found = False
+        while q and not found:
             current = q.unqueue()
             for vertex in graph.adj(current):
                 if vertex not in self.visit:
@@ -24,6 +23,9 @@ class Bfs:
                     self.paths[vertex] = current
                     self.distances[vertex] = self.distances[current] + 1
                     self.visit.append(vertex)
+                if vertex == dst:
+                    found = True
+                    break
 
     def visited(self, vertex):
         return vertex in self.visit
