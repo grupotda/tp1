@@ -4,7 +4,9 @@ from digraph import Digraph
 
 class Bfs:
     def __init__(self, graph, root, dst):
+        self.graph = graph
         self.root = root
+        self.dst = dst
 
         self.visit = []
         self.paths = {}
@@ -36,7 +38,16 @@ class Bfs:
         if vertex not in self.distances:
             return float("inf")
         else:
-            return self.distances[vertex]
+            # Esto es mas intricando de lo que me gustaria
+            # pero no quiero meter mano en la API del grafo
+            distance = 0
+            path = self.path(self.dst)
+            for i in range(len(path)):
+                for edge in self.graph.adj_e(path[i]):
+                    if edge.get_dst() == path[i+1]:
+                        distance += edge.get_weight()
+            return distance
+
 
     def path(self, vertex):
         """Returns list with the path found to vertex, none if there is

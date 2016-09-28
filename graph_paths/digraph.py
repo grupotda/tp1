@@ -12,6 +12,12 @@ class Edge:
         self.dst = dst
         self.weight = weight
 
+    def get_weight(self):
+        return self.weight
+
+    def get_dst(self):
+        return self.dst
+
 
 class Digraph:
     """

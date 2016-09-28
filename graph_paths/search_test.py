@@ -1,32 +1,34 @@
 from digraph import Digraph
 from bfs import Bfs
+from dijkstra import Dijkstra
 
 
-def bfs_test():
-    print "BFS test"
+def basic_test(Class):
+    print Class, "test"
     graph = Digraph(7)
 
-    graph.add_edge(0, 2)
-    graph.add_edge(2, 3)
-    graph.add_edge(2, 5)
-    graph.add_edge(5, 6)
-    graph.add_edge(0, 1)
-    graph.add_edge(1, 3)
+    graph.add_edge(0, 2, weight=1)
+    graph.add_edge(2, 3, weight=3)
+    graph.add_edge(2, 5, weight=1)
+    graph.add_edge(5, 6, weight=1)
+    graph.add_edge(0, 1, weight=2)
+    graph.add_edge(1, 3, weight=1)
 
-    bfs = Bfs(graph, 0, 6)
+    search = Class(graph, 0, 6)
 
     # Valid path
-    print "vertex 6 was visited:", bfs.visited(6)
-    print "path to 6 is [0, 2, 5, 6]:", bfs.path(6) == [0, 2, 5, 6]
-    print "which is of length 3:", bfs.distance(6) == 3
+    print "vertex 6 was visited:", search.visited(6)
+    print "path to 6 is [0, 2, 5, 6]:", search.path(6) == [0, 2, 5, 6]
+    print "which is of length 3:", search.distance(6) == 3
 
     # Unconnected vertex
-    print "path to 4 was not visited:", not bfs.visited(4)
-    print "path to 4 is None:", not bfs.path(4)
-    print "distance to 4 is inf:", bfs.distance(4) == float("inf")
+    print "path to 4 was not visited:", not search.visited(4)
+    print "path to 4 is None:", not search.path(4)
+    print "distance to 4 is inf:", search.distance(4) == float("inf")
 
     # Path to root
-    print "path to root is empty list:", bfs.path(0) == []
+    print "path to root is empty list:", search.path(0) == []
 
 
-bfs_test()
+basic_test(Bfs)
+basic_test(Dijkstra)
