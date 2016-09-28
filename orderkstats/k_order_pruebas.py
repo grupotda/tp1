@@ -43,20 +43,21 @@ def test_heap_select():
     k_element = heap_select(priority_max_integers, priority_min_integers, array, 4)
     print k_element
 
+
 def test_quickselect():
     """"Faltan, estas son bastante triviales"""
     print "Quickselect test"
     print "Ordered list [1,2,3,4,5,6,7]"
     l = [1, 2, 3, 4, 5, 6, 7]
-    print "Element 0 is 1: " + str(quickselect(l, 0) == 1)
-    print "Element 3 is 4: " + str(quickselect(l, 3) == 4)
-    print "Element 6 is 7: " + str(quickselect(l, 6) == 7)
+    print "Element 0 is 1: ", quickselect(l, 0) == 1
+    print "Element 3 is 4: ", quickselect(l, 3) == 4
+    print "Element 6 is 7: ", quickselect(l, 6) == 7
     print "Unordered list [7,3,8,3,6,3,1]"
     l = [7, 3, 8, 3, 6, 3, 1]
-    print "Element 0 is 1: " + str(quickselect(l, 0) == 1)
-    print "Element 3 is 3: " + str(quickselect(l, 3) == 3)
-    print "Element 6 is 8: " + str(quickselect(l, 6) == 8)
+    print "Element 0 is 1: ", quickselect(l, 0) == 1
+    print "Element 3 is 3: ", quickselect(l, 3) == 3
+    print "Element 6 is 8: ", quickselect(l, 6) == 8
 
 test_heap_select()
 test_quickselect()
-#main
+# main
