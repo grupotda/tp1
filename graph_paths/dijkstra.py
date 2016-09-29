@@ -14,7 +14,7 @@ class Dijkstra:
         # inf for every vertex
         for vertex in graph:
             self.distances[vertex] = float("inf")
-            self.visited_status[vertex] = "#unvisited"
+            self.visited_status[vertex] = False
         # except for source which is 0
         self.distances[src] = 0
 
@@ -24,28 +24,26 @@ class Dijkstra:
         while not end:
             for edge in graph.adj_e(current):
                 neighbour = edge.get_dst()
-                if self.visited_status[neighbour] == "#unvisited":
+                if not self.visited_status[neighbour]:
                     new_distance = self.distances[current] + edge.get_weight()
                     if new_distance < self.distances[neighbour]:
                         self.distances[neighbour] = new_distance
                         self.parents[neighbour] = current
-            self.visited_status[current] = "#visited"
+            self.visited_status[current] = True
             smallest_step = float("inf")
             next = None
             for neighbour in graph.adj(current):
-                if self.visited_status[neighbour] == "#unvisited" and self.distances[neighbour] < smallest_step:
+                if not self.visited_status[neighbour] and self.distances[neighbour] < smallest_step:
                     next = neighbour
                     smallest_step = self.distances[next]
             if next == dst or smallest_step == float("inf"):
                 end = True
-                self.visited_status[next] = "#visited"
+                self.visited_status[next] = True
             self.parents[next] = current
             current = next
 
-
     def visited(self, vertex):
-        return self.visited_status[vertex] == "#visited"
-
+        return self.visited_status[vertex]
 
     def distance(self, vertex):
         """Returns distance found to vertex, or inf if vertex was not
@@ -55,13 +53,12 @@ class Dijkstra:
         else:
             return self.distances[vertex]
 
-
     def path(self, vertex):
         """Returns list with the path found to vertex, none if there is
         no such path, or an empty list if vertex is the root"""
         if vertex == self.src:
             return []
-        elif not self.visited_status[vertex] == "#visited":
+        elif not self.visited_status[vertex]:
             return None
         else:
             path = []
