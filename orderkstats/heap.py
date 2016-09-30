@@ -45,18 +45,6 @@ class Heap(object):
         
         return True
 
-    def _swap_y_continuar(self, posicion_hijo, posicion_padre, upheap):
-
-
-        swap(self.datos, posicion_hijo, posicion_padre)        
-        if upheap:
-
-            self._upheap(posicion_padre)
-
-        else:
-
-            self._downheap(posicion_padre)
-
     def _upheap(self, pos_actual):
 
         if pos_actual == 0:
