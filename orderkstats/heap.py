@@ -2,6 +2,15 @@ def division_techo(dividendo, divisor):
 
     return (dividendo + (divisor / 2)) / divisor
 
+def swap(array, p1, p2):
+
+    '''Intercambia los valores de la posicion 'p1' con 'p2' de la lista
+       'array' '''
+
+    aux = array[p1]
+    array[p1] = array[p2]
+    array[p2] = aux
+
 class Heap(object):
 
     def __init__(self, funcion_comparacion, Array = []):
@@ -11,15 +20,15 @@ class Heap(object):
         self.comparar_prioridad = funcion_comparacion
         self._heapify()       
 
-    def esta_vacio(self):
+    def empty(self):
 
         return not self.cantidad_elementos
 
-    def cantidad(self):
+    def quantity(self):
 
         return self.cantidad_elementos
 
-    def ver_max(self):
+    def view_first(self):
 
         maximo = 0
         try:
@@ -28,7 +37,7 @@ class Heap(object):
         except IndexError:
             return None
 
-    def encolar(self, elemento):
+    def enqueue(self, elemento):
 
         self.datos.append(elemento)
         self.cantidad_elementos += 1
@@ -38,11 +47,8 @@ class Heap(object):
 
     def _swap_y_continuar(self, posicion_hijo, posicion_padre, upheap):
 
-        
-        
-        aux = self.datos[posicion_hijo]
-        self.datos[posicion_hijo] = self.datos[posicion_padre]
-        self.datos[posicion_padre] = aux
+
+        swap(self.datos, posicion_hijo, posicion_padre)        
         if upheap:
 
             self._upheap(posicion_padre)
@@ -51,18 +57,22 @@ class Heap(object):
 
             self._downheap(posicion_padre)
 
-    def _upheap(self, posicion_actual):
+    def _upheap(self, pos_actual):
 
-        if posicion_actual == 0:
+        if pos_actual == 0:
 
             return
 
-        padre = division_techo(posicion_actual-2,2)
-        if self.comparar_prioridad(self.datos[posicion_actual],self.datos[padre]) > 0:
-            self._swap_y_continuar(posicion_actual, padre, True)
+        pos_padre = division_techo(pos_actual-2,2)
+        dato_padre = self.datos[pos_padre]
+        dato_hijo = self.datos[pos_actual]
+        if self.comparar_prioridad(dato_hijo,dato_padre) > 0:
 
+            swap(self.datos, pos_actual, pos_padre)
+            self._upheap(pos_padre)
+            
 
-    def desencolar(self):
+    def dequeue(self):
 
         try:
 
@@ -86,31 +96,27 @@ class Heap(object):
         pos_h_derecho = (2*posicion_actual) + 2
         comparar = self.comparar_prioridad
         datos = self.datos
+        
         if pos_h_izquierdo >= self.cantidad_elementos: #Arbol izquierdista
 
             return
 
-        elif pos_h_derecho >= self.cantidad_elementos: #solo un hijo izquierdo
+        pos_prioritaria = pos_h_izquierdo
 
-            if comparar(datos[posicion_actual], datos[pos_h_izquierdo]) == -1:
+        if pos_h_derecho < self.cantidad_elementos and\
+           comparar(datos[pos_prioritaria], datos[pos_h_derecho]) < 0 and\
+           comparar(datos[posicion_actual], datos[pos_h_derecho]) < 0:
 
-                self._swap_y_continuar(posicion_actual, pos_h_izquierdo, False)
+            pos_prioritaria = pos_h_derecho
 
-        else: #Tiene dos hijos
-    
-            if comparar(datos[posicion_actual], datos[pos_h_derecho]) > 0:
+        elif comparar(datos[posicion_actual], datos[pos_h_izquierdo]) > 0: #No hay que hacer nada
 
-                if comparar(datos[posicion_actual], datos[pos_h_izquierdo]) > 0:
-                    
-                    return #los hijos son menores que el
+            pos_prioritaria = None
 
-            pos_prioritaria = pos_h_izquierdo
-            if comparar(datos[pos_h_izquierdo], datos[pos_h_derecho]) < 0:
-                            
-                pos_prioritaria = pos_h_derecho #el hijo derecho tenia mas prioridad
+        if pos_prioritaria:
 
-            self._swap_y_continuar(posicion_actual, pos_prioritaria, False)
-
+            swap(self.datos, posicion_actual, pos_prioritaria)
+            self._downheap(pos_prioritaria)
 
     def _heapify(self):
 
