@@ -1,11 +1,28 @@
 from k_heapsort import k_heapsort
-from heap_select import heap_select
+from heap_select import *
 from quickselect import quickselect
+from brute import brute_force
+from order_and_select import select_kth, quicksort
+from kselect import k_select
 import random
 
-#hacer un print test
 #para los de heap, obtener el k-esimo elemento mas chico mediante FB y luego comparar resultados
 #alguna prueba para los demas algoritmos
+
+
+def print_test(msg, bool_expression):
+    '''If <bool_expression> , prints msg + '... OK',
+     else, prints msg + '... ERROR' 
+
+     PRE: msg is a string'''
+
+    if bool_expression:
+
+        print msg+"... OK"
+        return
+
+    print msg+"... ERROR"
+
 
 def priority_min_integers(a,b):
 
@@ -17,47 +34,179 @@ def priority_max_integers(a,b):
 
     return -(priority_min_integers(a,b))
 
-def test_kheapsort():
-
-    array = range(1,100)
-    random.shuffle(array)
-    array = array[:14]    
-    copia = list(array)
-    copia.sort()
-    print copia
-    print array
-    k_element = k_heapsort(priority_min_integers, array, 8)
-    print k_element
+def test_brute(n):
+    '''Tests brute_force algorithm for finding the first k'th element in an array
+       n times
+    '''
     
-test_kheapsort()
+    fail = False
+    while n > 0 and not fail:
+        l = range(1,100)
+        random.shuffle(l)
+        l = l[:16]
+        l2 = list(l)
+        l2.sort()
+        for i in range(len(l)):
 
-def test_heap_select():
+            result = brute_force(l, i)
+            if result is not l2[i]:
 
-    array = range(1,100)
-    random.shuffle(array)
-    array = array[:14]
-    copia = list(array)
-    copia.sort()
-    print copia
-    print array
-    k_element = heap_select(priority_max_integers, priority_min_integers, array, 4)
-    print k_element
+                fail = True 
+                break
+        n -= 1
+
+    print_test('Brute force test', fail == False)
+
+def test_order_and_select(n):
+    '''Tests order_and_select algorithm for finding the first k'th element in an array
+       n times
+    '''
+    
+    fail = False
+    while n > 0 and not fail:
+        l = range(1,100)
+        random.shuffle(l)
+        l = l[:16]
+        l2 = list(l)
+        l2.sort()
+        for i in range(len(l)):
+
+            
+            result = select_kth(l, quicksort, 0, len(l) - 1,i)
+            if result is not l2[i]:
+
+                fail = True 
+                break
+
+            random.shuffle(l) 
+          
+        n -= 1
+
+    print_test('Order and select test', fail == False)
+
+def test_kselect(n):
+
+    '''Tests kselect algorithm for finding the first k'th element in an array
+       n times
+    '''
+
+    fail = False
+    while n > 0 and not fail:
+        l = range(1,100)
+        random.shuffle(l)
+        l = l[:16]
+        l2 = list(l)
+        l2.sort()
+        for i in range(len(l)):
+
+            result = k_select(l, i)
+            if result is not l2[i]:
+
+                fail = True 
+                break
+
+            random.shuffle(l) 
+          
+        n -= 1
+
+    print_test('Kselect test', fail == False)
 
 
-def test_quickselect():
-    """"Faltan, estas son bastante triviales"""
-    print "Quickselect test"
-    print "Ordered list [1,2,3,4,5,6,7]"
-    l = [1, 2, 3, 4, 5, 6, 7]
-    print "Element 0 is 1: ", quickselect(l, 0) == 1
-    print "Element 3 is 4: ", quickselect(l, 3) == 4
-    print "Element 6 is 7: ", quickselect(l, 6) == 7
-    print "Unordered list [7,3,8,3,6,3,1]"
-    l = [7, 3, 8, 3, 6, 3, 1]
-    print "Element 0 is 1: ", quickselect(l, 0) == 1
-    print "Element 3 is 3: ", quickselect(l, 3) == 3
-    print "Element 6 is 8: ", quickselect(l, 6) == 8
+def test_kheapselect(n):
 
-test_heap_select()
-test_quickselect()
-# main
+    '''Tests kheapselect algorithm for finding the first k'th element in an array
+       n times
+    '''
+
+    fail = False
+    
+    while n > 0 and not fail:
+
+        l = range(1,100)
+        random.shuffle(l)
+        l = l[:16]
+        l2 = list(l)
+        l2.sort()
+        
+        for i in range(1, len(l)):
+
+            result = heap_select(priority_max_integers, priority_min_integers, list(l), i)
+  
+            if result is not l2[i - 1]:
+                           
+                fail = True 
+                break
+
+            random.shuffle(l) 
+          
+        n -= 1
+        
+    print_test('kheapselect test', fail == False)
+    
+
+def test_kheapsort(n):
+
+    '''Tests kheapsort algorithm for finding the first k'th element in an array
+       n times
+    '''
+
+    fail = False
+    while n > 0 and not fail:
+
+        l = range(1,100)
+        random.shuffle(l)
+        l = l[:16]
+        l2 = list(l)
+        l2.sort()
+        
+        for i in range(1, len(l)):
+
+            result = k_heapsort(priority_min_integers, list(l), i)
+            if result != l2[i - 1]:
+
+                fail = True
+                break
+        
+        n -= 1
+
+    print_test('kheapsort test', fail == False)
+
+
+
+def test_quickselect(n):
+    '''Tests quickselect algorithm for finding the first k'th element in an array
+       n times
+    '''    
+
+    fail = False
+
+    while n > 0 and not fail:
+
+        
+        l = range(1,100)
+        random.shuffle(l)
+        l = l[:16]
+        l2 = list(l)
+        l2.sort()
+        for i in range(1, len(l)):
+
+            result = quickselect(list(l), i)
+            if result != l2[i]:
+
+                fail = True
+                break
+        n -= 1
+
+    print_test('quickselect test', fail == False)
+
+def main():
+    '''Runs all tests'''
+    
+    test_brute(10)
+    test_order_and_select(10)
+    test_kselect(10)
+    test_kheapselect(1) #ver
+    test_kheapsort(10)
+    test_quickselect(10)
+
+main()
