@@ -15,7 +15,7 @@ class Heap(object):
 
     def __init__(self, funcion_comparacion, Array = []):
 
-        self.datos = Array
+        self.datos = list(Array)
         self.cantidad_elementos = len(self.datos)        
         self.comparar_prioridad = funcion_comparacion
         self._heapify()       
