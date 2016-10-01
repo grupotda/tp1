@@ -205,7 +205,7 @@ def main():
     test_brute(10)
     test_order_and_select(10)
     test_kselect(10)
-    test_kheapselect(1) #ver
+    test_kheapselect(10)
     test_kheapsort(10)
     test_quickselect(10)
 
