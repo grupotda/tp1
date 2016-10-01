@@ -12,6 +12,9 @@ class Edge:
         self.dst = dst
         self.weight = weight
 
+    def __str__(self):
+        return "%d-%d->%d" % (self.src, self.weight, self.dst)
+
     def get_weight(self):
         return self.weight
 
@@ -29,7 +32,8 @@ class Digraph:
         Construye un grafo sin aristas de V vertices.
         :param V: cantidad de vertices
         """
-        self.vertices = [ [] for x in xrange(V) ]
+        # fijarse pasar a lazy initialization
+        self.vertices = [[] for _ in xrange(V)]
 
     def V(self):
         """
@@ -61,7 +65,7 @@ class Digraph:
         # Uso un set para no tener elementos duplicados
         return iter(set(a.dst for a in self.vertices[v]))
 
-    def add_edge(self, src, dst, weight=0):
+    def add_edge(self, src, dst, weight=1):
         """
         Añade una arista al grafo.
         :param src: el vertice origen, debe pertenecer al grafo.
