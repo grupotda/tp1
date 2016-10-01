@@ -1,70 +1,40 @@
-from digraph import Digraph
+#!/usr/bin/python
+#  -*- coding: utf-8 -*-
+from path import Path
+from heapq import heappop, heappush
+from digraph import Digraph, Edge
 
 
-class Dijkstra:
-    def __init__(self, graph, src, dst):
-        self.graph = graph
-        self.src = src
-        self.dst = dst
+class Dijkstra(Path):
+    """
+    Algoritmo de Dijkstra
+    """
 
-        self.distances = {}
-        self.visited_status = {}
-        self.parents = {}
-        # Set initial distances as:
-        # inf for every vertex
-        for vertex in graph:
-            self.distances[vertex] = float("inf")
-            self.visited_status[vertex] = False
-        # except for source which is 0
-        self.distances[src] = 0
+    def _algorithm(self):
+        # heap inicializado con arista mentirosa
+        heap = [(None, Edge(self.src, self.src, weight=0))]
 
-        current = src
-        end = False
-        # Update distances to unvisited neighbours
-        while not end:
-            for edge in graph.adj_e(current):
-                neighbour = edge.get_dst()
-                if not self.visited_status[neighbour]:
-                    new_distance = self.distances[current] + edge.get_weight()
-                    if new_distance < self.distances[neighbour]:
-                        self.distances[neighbour] = new_distance
-                        self.parents[neighbour] = current
-            self.visited_status[current] = True
-            smallest_step = float("inf")
-            next = None
-            for neighbour in graph.adj(current):
-                if not self.visited_status[neighbour] and self.distances[neighbour] < smallest_step:
-                    next = neighbour
-                    smallest_step = self.distances[next]
-            if next == dst or smallest_step == float("inf"):
-                end = True
-                self.visited_status[next] = True
-            self.parents[next] = current
-            current = next
+        while heap and not self.tagged[self.dst]:
+            _, edge = heappop(heap)
+            if not self.tagged[edge.dst]:
 
-    def visited(self, vertex):
-        return self.visited_status[vertex]
+                self.edge_to[edge.dst] = edge
+                self.distances[edge.dst] = self.distances.get(edge.src, 0) + edge.weight
+                self.tagged[edge.dst] = True
 
-    def distance(self, vertex):
-        """Returns distance found to vertex, or inf if vertex was not
-         found"""
-        if vertex not in self.distances:
-            return float("inf")
-        else:
-            return self.distances[vertex]
+                if edge.dst == self.dst:
+                    break
 
-    def path(self, vertex):
-        """Returns list with the path found to vertex, none if there is
-        no such path, or an empty list if vertex is the root"""
-        if vertex == self.src:
-            return []
-        elif not self.visited_status[vertex]:
-            return None
-        else:
-            path = []
-            current = vertex
-            path.insert(0, current)
-            while current in self.parents:
-                current = self.parents[current]
-                path.insert(0, current)
-        return path
+                for next_edge in self.graph.adj_e(edge.dst):
+                    if not self.tagged[next_edge.dst]:
+                        heappush(heap, (self._priority(next_edge), next_edge))
+
+        self.edge_to.pop(self.src)  # borro la arista mentirosa
+
+    def _priority(self, edge):
+        """
+        Calcula la prioridad de esa arista.
+        :param edge: Arista a agregar al heap, Edge.dst no fue visitado, Edge.src si
+        :return: un objeto comparable. Menor implica ser de mayor prioridad.
+        """
+        return self.distances[edge.src] + edge.weight
