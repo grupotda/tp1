@@ -1,21 +1,13 @@
-def check_solution(l,k,x):
+def check_solution(array, k, x):
+    '''Chequea si el valor x es el k-esimo elemento mas chico del array'''
     count = 0
-    for i in range(len(l)):
-        if l[i] < x:
+    for i in range(len(array)):
+        if array[i] < x:
             count += 1
     return count == k
 
-def brute_force(l,k):
-    for i in range(len(l)):
-        if check_solution(l,k,l[i]):
-            return l[i]
-
-import random
-
-l = range(1,100)
-random.shuffle(l)
-l = l[:16]
-print l
-for k in range(len(l)):
-    print k,",",brute_force(l,k)
-
+def brute_force(array, k):
+    '''Devuelve el est. de orden k del array'''
+    for i in range(len(array)):
+        if check_solution(array, k, array[i]):
+            return array[i]

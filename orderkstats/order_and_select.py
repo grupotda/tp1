@@ -1,31 +1,27 @@
-def partition(l,pos_i,pos_f):
-    pivot = l[pos_f] 
+def partition(array, pos_i, pos_f):
+    '''Particiona el array en dos '''
+    pivot = array[pos_f]
     j = pos_i
-    for i in range(pos_i,pos_f):
-        if l[i] <= pivot:
-            '''Swap el primero de todos los mayores con este'''
-            l[i],l[j] = l[j],l[i]
+    for i in range(pos_i, pos_f):
+        if array[i] <= pivot:
+            #Swap el primero de todos los mayores con este
+            array[i], array[j] = array[j], array[i]
             j += 1
-    '''Swap el pivote que quedo al final con el primero de todos los mayores'''
-    l[j],l[pos_f] = l[pos_f],l[j]
+    #Swap el pivote que quedo al final con el primero de todos los mayores
+    array[j], array[pos_f] = array[pos_f], array[j]
     return j
 
-def quicksort(l,pos_i,pos_f):
+def quicksort(array, pos_i, pos_f):
+    '''Ordena los elementos del array entre las posiciones pos_i y pos_f con quicksort'''
     if pos_i < pos_f:
-        j = partition(l,pos_i,pos_f)
-        quicksort(l,pos_i,j-1)
-        quicksort(l,j+1,pos_f)
+        j = partition(array, pos_i, pos_f)
+        quicksort(array, pos_i, j-1)
+        quicksort(array, j+1, pos_f)
 
 
-def select_kth(l,sort,pos_i,pos_f,k):
-    sort(l,pos_i,pos_f)
-    return l[k]
+def select_kth(array, sort, pos_i, pos_f, k):
+    '''Ordena el array luego devuelve el k elemento mas chico.'''
+    ordered_array = array[:]
+    sort(ordered_array, pos_i, pos_f)
+    return ordered_array[k]
 
-import random
-l = range(100)
-random.shuffle(l)
-l = l[:16]
-quicksort(l,0,len(l)-1)
-print l
-for k in range(len(l)):
-    print k,",",select_kth(l,quicksort,0,len(l)-1,k)
