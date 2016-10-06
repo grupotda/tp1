@@ -9,7 +9,7 @@ from k_heapsort import k_heapsort
 from quickselect import quickselect
 import timeit
 
-TEST_LIST_SIZE = 50
+TEST_LIST_SIZE = 200
 NUMBER_OF_TESTS = 50
 
 
@@ -51,10 +51,10 @@ for i in range(NUMBER_OF_TESTS):
     k_select(l, index)
     means[2] += timeit.default_timer() - start_time
     start_time = timeit.default_timer()
-    k_heapsort(priority_min_integers, l, index)
+    k_heapsort(priority_min_integers, l, index + 1)
     means[3] += timeit.default_timer() - start_time
     start_time = timeit.default_timer()
-    heap_select(priority_max_integers, priority_min_integers, l, index)
+    heap_select(priority_max_integers, priority_min_integers, l, index + 1)
     means[4] += timeit.default_timer() - start_time
     start_time = timeit.default_timer()
     quickselect(l, index)
