@@ -29,6 +29,8 @@ def basic_test(Class):
     # Path to root
     print "path to root is empty list:", search.path(0) == []
 
+    print ""
+
 
 basic_test(Bfs)
 basic_test(Dijkstra)

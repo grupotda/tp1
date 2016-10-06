@@ -1,8 +1,9 @@
 from heap import Heap
 
-def heap_select(heap_comparation, comparation_function, array, k):
 
-    heap = Heap(heap_comparation)
+def heap_select(heap_comparison, comparison_function, array, k):
+
+    heap = Heap(heap_comparison)
     lenght = len(array)
     for i in range(k): #agrego los primeros k elementos al heap
 
@@ -12,7 +13,7 @@ def heap_select(heap_comparation, comparation_function, array, k):
         element = heap.view_first()
         current = array[x]
         
-        if comparation_function(element, current) <= -1: #current es mas chico que el elemento mas grande, lo encolo
+        if comparison_function(element, current) <= -1: #current es mas chico que el elemento mas grande, lo encolo
 
             s = heap.dequeue()
             heap.enqueue(current)

@@ -2,7 +2,7 @@ from k_heapsort import k_heapsort
 from heap_select import *
 from quickselect import quickselect
 from brute import brute_force
-from order_and_select import select_kth, quicksort
+from order_and_select import order_and_select, quicksort
 from kselect import k_select
 import random
 
@@ -25,14 +25,14 @@ def print_test(msg, bool_expression):
 
 
 def priority_min_integers(a,b):
-
     if a == b: return 0
     elif a > b: return -1
     return 1
 
-def priority_max_integers(a,b):
 
+def priority_max_integers(a,b):
     return -(priority_min_integers(a,b))
+
 
 def test_brute(n):
     '''Tests brute_force algorithm for finding the first k'th element in an array
@@ -47,15 +47,14 @@ def test_brute(n):
         l2 = list(l)
         l2.sort()
         for i in range(len(l)):
-
             result = brute_force(l, i)
             if result is not l2[i]:
-
                 fail = True 
                 break
         n -= 1
 
     print_test('Brute force test', fail == False)
+
 
 def test_order_and_select(n):
     '''Tests order_and_select algorithm for finding the first k'th element in an array
@@ -70,9 +69,7 @@ def test_order_and_select(n):
         l2 = list(l)
         l2.sort()
         for i in range(len(l)):
-
-            
-            result = select_kth(l, quicksort, 0, len(l) - 1,i)
+            result = order_and_select(l, quicksort, i)
             if result is not l2[i]:
 
                 fail = True 
@@ -84,8 +81,8 @@ def test_order_and_select(n):
 
     print_test('Order and select test', fail == False)
 
-def test_kselect(n):
 
+def test_kselect(n):
     '''Tests kselect algorithm for finding the first k'th element in an array
        n times
     '''
@@ -153,7 +150,7 @@ def test_kheapsort(n):
     fail = False
     while n > 0 and not fail:
 
-        l = range(1,100)
+        l = range(1, 100)
         random.shuffle(l)
         l = l[:16]
         l2 = list(l)

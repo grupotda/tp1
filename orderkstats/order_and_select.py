@@ -19,9 +19,9 @@ def quicksort(array, pos_i, pos_f):
         quicksort(array, j+1, pos_f)
 
 
-def select_kth(array, sort, pos_i, pos_f, k):
+def order_and_select(array, sort, k):
     '''Ordena el array luego devuelve el k elemento mas chico.'''
     ordered_array = array[:]
-    sort(ordered_array, pos_i, pos_f)
+    sort(ordered_array, 0, len(array) - 1)
     return ordered_array[k]
 
