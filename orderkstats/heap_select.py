@@ -5,12 +5,8 @@ def heap_select(heap_comparison, comparison_function, array, k):
 
     heap = Heap(heap_comparison)
     length = len(array)
-    limit = 0
-    for i in range(len(array)):  # Agrego los primeros k elementos al heap
-        if limit > k:
-            break
+    for i in range(k+1):  # Agrego los primeros k elementos al heap; + 1 porque k >= 0
         heap.enqueue(array[i])
-        limit += 1
         
     for x in range(k + 1, length):
         element = heap.view_first()
