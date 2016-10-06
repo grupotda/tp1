@@ -16,6 +16,6 @@ def select(array, left, right, k):
         return select(array, left, wall - 1, k)
 
 def quickselect(array, k):
-    return select(array, 0, len(array)-1, k)
+    return select(list(array), 0, len(array)-1, k)
 
 
