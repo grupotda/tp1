@@ -1,5 +1,5 @@
 from k_heapsort import k_heapsort
-from heap_select import *
+from heap_select import heap_select
 from quickselect import quickselect
 from brute import brute_force
 from order_and_select import order_and_select, quicksort
@@ -195,6 +195,38 @@ def test_quickselect(n):
         n -= 1
 
     print_test('quickselect test', fail == False)
+    
+def pruebas_tiempo(n):
+
+    arr = range(n)
+    random.shuffle(arr)
+    t1 = clock()
+    res = 313
+    res_brute = brute_force(list(arr), res-1)
+    t_brute = clock() - t1
+    t2 = clock()
+    res_order_select = select_kth(list(arr), sorted,len(arr) - 1, 0, res-1)
+    t_ord_sel = clock() - t2
+    t3 = clock()    
+    res_kselect = k_select(list(arr), res-1)
+    t_kselect = clock() - t3
+    t4 = clock()
+    res_kheapsort = k_heapsort(priority_min_integers, list(arr), res)
+    t_kheapsort = clock() - t4
+    t5 = clock()
+    res_heapselect = heap_select(priority_max_integers, priority_min_integers, list(arr), res)
+    t_heapselect = clock() - t5
+    t6 = clock()
+    res_quickselect = quickselect(list(arr), res-1)
+    t_quickselect = clock() - t6
+
+    print_test("Resultados coinciden",res_brute == res_order_select == res_kselect == res_kheapsort == res_heapselect == res_quickselect)
+    print "Tiempo brute force: "+str(t_brute)+" resultado: "+str(res_brute)
+    print "Tiempo order and select: "+str(t_ord_sel)+" resultado:"+str(res_order_select)
+    print "Tiempo kselect: "+str(t_kselect)+" resultado:"+str(res_kselect)
+    print "Tiempo kheapsort: "+str(t_kheapsort)+" resultado:"+str(res_kheapsort)
+    print "Tiempo heapselect: "+str(t_heapselect)+" resultado:"+str(res_heapselect)
+    print "Tiempo quickselect: "+str(t_quickselect)+" resultado:"+str(res_quickselect)
 
 def main():
     '''Runs all tests'''
@@ -202,8 +234,9 @@ def main():
     test_brute(10)
     test_order_and_select(10)
     test_kselect(10)
-    test_kheapselect(10)
+    test_kheapselect(10) 
     test_kheapsort(10)
     test_quickselect(10)
+    pruebas_tiempo(10000)
 
 main()
