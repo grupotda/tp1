@@ -13,14 +13,16 @@ TEST_LIST_SIZE = 50
 NUMBER_OF_TESTS = 50
 
 
-def priority_min_integers(a,b):
-    if a == b: return 0
-    elif a > b: return -1
+def priority_min_integers(a, b):
+    if a == b:
+        return 0
+    elif a > b:
+        return -1
     return 1
 
 
-def priority_max_integers(a,b):
-    return -(priority_min_integers(a,b))
+def priority_max_integers(a, b):
+    return -(priority_min_integers(a, b))
 
 
 def generate_list():
@@ -49,7 +51,7 @@ for i in range(NUMBER_OF_TESTS):
     k_select(l, index)
     means[2] += timeit.default_timer() - start_time
     start_time = timeit.default_timer()
-    #k_heapsort(priority_min_integers, l, index)
+    k_heapsort(priority_min_integers, l, index)
     means[3] += timeit.default_timer() - start_time
     start_time = timeit.default_timer()
     heap_select(priority_max_integers, priority_min_integers, l, index)

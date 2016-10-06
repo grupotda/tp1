@@ -1,3 +1,5 @@
+from time import clock
+
 from k_heapsort import k_heapsort
 from heap_select import heap_select
 from quickselect import quickselect
@@ -205,7 +207,7 @@ def pruebas_tiempo(n):
     res_brute = brute_force(list(arr), res-1)
     t_brute = clock() - t1
     t2 = clock()
-    res_order_select = select_kth(list(arr), quicksort,len(arr) - 1, 0, res-1)
+    res_order_select = order_and_select(list(arr), quicksort, res-1)
     t_ord_sel = clock() - t2
     t3 = clock()    
     res_kselect = k_select(list(arr), res-1)
