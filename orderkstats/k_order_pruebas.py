@@ -158,7 +158,7 @@ def test_kheapsort(n):
         l2 = list(l)
         l2.sort()
         
-        for i in rangelen(l)):
+        for i in range(len(l)):
 
             result = k_heapsort(priority_min_integers, list(l), i)
             if result is not l2[i]:
@@ -204,13 +204,13 @@ def pruebas_tiempo(n):
     random.shuffle(arr)
     t1 = clock()
     res = 313
-    res_brute = brute_force(list(arr), res-1)
+    res_brute = brute_force(list(arr), res)
     t_brute = clock() - t1
     t2 = clock()
-    res_order_select = order_and_select(list(arr), quicksort, res-1)
+    res_order_select = order_and_select(list(arr), quicksort, res)
     t_ord_sel = clock() - t2
     t3 = clock()    
-    res_kselect = k_select(list(arr), res-1)
+    res_kselect = k_select(list(arr), res)
     t_kselect = clock() - t3
     t4 = clock()
     res_kheapsort = k_heapsort(priority_min_integers, list(arr), res)
@@ -219,7 +219,7 @@ def pruebas_tiempo(n):
     res_heapselect = heap_select(priority_max_integers, priority_min_integers, list(arr), res)
     t_heapselect = clock() - t5
     t6 = clock()
-    res_quickselect = quickselect(list(arr), res-1)
+    res_quickselect = quickselect(list(arr), res)
     t_quickselect = clock() - t6
 
     print_test("Resultados coinciden",res_brute == res_order_select == res_kselect == res_kheapsort == res_heapselect == res_quickselect)

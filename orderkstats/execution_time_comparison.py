@@ -42,24 +42,24 @@ for i in range(NUMBER_OF_TESTS):
     l = generate_list()
     index = randint(0, NUMBER_OF_TESTS-1)
     start_time = timeit.default_timer()
-    brute_force(l, index)
+    r0 = brute_force(l, index)
     means[0] += timeit.default_timer() - start_time
     start_time = timeit.default_timer()
-    order_and_select(l, quicksort, index)
+    r1 = order_and_select(l, quicksort, index)
     means[1] += timeit.default_timer() - start_time
     start_time = timeit.default_timer()
-    k_select(l, index)
+    r2 = k_select(l, index)
     means[2] += timeit.default_timer() - start_time
     start_time = timeit.default_timer()
-    k_heapsort(priority_min_integers, l, index + 1)
+    r3 = k_heapsort(priority_min_integers, l, index)
     means[3] += timeit.default_timer() - start_time
     start_time = timeit.default_timer()
-    heap_select(priority_max_integers, priority_min_integers, l, index + 1)
+    r4 = heap_select(priority_max_integers, priority_min_integers, l, index)
     means[4] += timeit.default_timer() - start_time
     start_time = timeit.default_timer()
-    quickselect(l, index)
+    r5 = quickselect(l, index)
     means[5] += timeit.default_timer() - start_time
-
+    assert r0 == r1 == r2 == r3 == r4 == r5
 
 for j in range(len(means)):
     means[j] *= 1000000  # Micro Secs
