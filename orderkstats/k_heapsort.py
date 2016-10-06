@@ -4,7 +4,7 @@ def k_heapsort(comparation_function, array, k):
     
     heap = Heap(comparation_function, array)
     
-    while k >= 1:
+    while k >= 0:
 
         element = heap.dequeue()
         k -= 1
