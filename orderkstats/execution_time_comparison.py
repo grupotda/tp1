@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from random import randint
+from random import randint, shuffle
 from brute import brute_force
 from order_and_select import order_and_select, quicksort
 from kselect import k_select
@@ -26,14 +26,11 @@ def priority_max_integers(a, b):
 
 
 def generate_list():
-    l = []
-    for i in range(TEST_LIST_SIZE):
-        rand = randint(0, 100)
-        if rand not in l:
-            l.append(randint(0, 50))
-        else:
-            l.append(l[i-1] + 50)
-    return l
+    random_l = []
+    for element in range(TEST_LIST_SIZE):
+        random_l.append(randint(0, 1000))
+    shuffle(random_l)
+    return random_l
 
 n = 6
 means = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
@@ -59,7 +56,13 @@ for i in range(NUMBER_OF_TESTS):
     start_time = timeit.default_timer()
     r5 = quickselect(l, index)
     means[5] += timeit.default_timer() - start_time
-    assert r0 == r1 == r2 == r3 == r4 == r5
+    try:
+        assert r0 == r1 == r2 == r3 == r4 == r5
+    except AssertionError:
+        print "Los resultados son los siguientes y no coinciden:"
+        print r0, r1, r2, r3, r4, r5
+        print "Lista culpable:"
+        print l
 
 for j in range(len(means)):
     means[j] *= 1000000  # Micro Secs
