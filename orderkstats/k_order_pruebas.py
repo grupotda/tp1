@@ -127,11 +127,11 @@ def test_kheapselect(n):
         l2 = list(l)
         l2.sort()
         
-        for i in range(1, len(l)):
+        for i in range(len(l)):
 
             result = heap_select(priority_max_integers, priority_min_integers, list(l), i)
   
-            if result is not l2[i - 1]:
+            if result is not l2[i]:
                            
                 fail = True 
                 break
@@ -158,10 +158,10 @@ def test_kheapsort(n):
         l2 = list(l)
         l2.sort()
         
-        for i in range(1, len(l)):
+        for i in rangelen(l)):
 
             result = k_heapsort(priority_min_integers, list(l), i)
-            if result != l2[i - 1]:
+            if result is not l2[i]:
 
                 fail = True
                 break
@@ -190,7 +190,7 @@ def test_quickselect(n):
         for i in range(1, len(l)):
 
             result = quickselect(list(l), i)
-            if result != l2[i]:
+            if result is not l2[i]:
 
                 fail = True
                 break
