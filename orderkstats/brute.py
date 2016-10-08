@@ -8,9 +8,8 @@ def check_solution(array, k, x):
         elif array[i] == x:
             equal_count += 1
     found = False
-    for i in range(equal_count + 1):
-        if less_count + i == k:
-            found = True
+    if less_count <= k <= less_count + equal_count:
+        found = True
     return found
 
 
