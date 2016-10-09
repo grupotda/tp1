@@ -16,7 +16,7 @@ class Dijkstra(Path):
 
         while heap and not self.tagged[self.dst]:
             _, edge = heappop(heap)
-            if not self.tagged[edge.dst]:
+            if not self.tagged[edge.dst]: #y si mejora en cuanto a peso pero no la tiene en cuenta por esto? no estoy seguro pero despues en pruebas se vera esto
 
                 self.edge_to[edge.dst] = edge
                 self.distances[edge.dst] = self.distances.get(edge.src, 0) + edge.weight
