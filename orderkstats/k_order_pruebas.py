@@ -13,10 +13,10 @@ import random
 
 
 def print_test(msg, bool_expression):
-    '''If <bool_expression> , prints msg + '... OK',
+    """If <bool_expression> , prints msg + '... OK',
      else, prints msg + '... ERROR' 
 
-     PRE: msg is a string'''
+     PRE: msg is a string"""
 
     if bool_expression:
 
@@ -37,9 +37,9 @@ def priority_max_integers(a,b):
 
 
 def test_brute(n):
-    '''Tests brute_force algorithm for finding the first k'th element in an array
+    """Tests brute_force algorithm for finding the first k'th element in an array
        n times
-    '''
+    """
     
     fail = False
     while n > 0 and not fail:
@@ -59,9 +59,9 @@ def test_brute(n):
 
 
 def test_order_and_select(n):
-    '''Tests order_and_select algorithm for finding the first k'th element in an array
+    """Tests order_and_select algorithm for finding the first k'th element in an array
        n times
-    '''
+    """
     
     fail = False
     while n > 0 and not fail:
@@ -85,9 +85,9 @@ def test_order_and_select(n):
 
 
 def test_kselect(n):
-    '''Tests kselect algorithm for finding the first k'th element in an array
+    """Tests kselect algorithm for finding the first k'th element in an array
        n times
-    '''
+    """
 
     fail = False
     while n > 0 and not fail:
@@ -113,9 +113,9 @@ def test_kselect(n):
 
 def test_kheapselect(n):
 
-    '''Tests kheapselect algorithm for finding the first k'th element in an array
+    """Tests kheapselect algorithm for finding the first k'th element in an array
        n times
-    '''
+    """
 
     fail = False
     
@@ -144,10 +144,9 @@ def test_kheapselect(n):
     
 
 def test_kheapsort(n):
-
-    '''Tests kheapsort algorithm for finding the first k'th element in an array
+    """Tests kheapsort algorithm for finding the first k'th element in an array
        n times
-    '''
+    """
 
     fail = False
     while n > 0 and not fail:
@@ -171,17 +170,14 @@ def test_kheapsort(n):
     print_test('kheapsort test', fail == False)
 
 
-
 def test_quickselect(n):
-    '''Tests quickselect algorithm for finding the first k'th element in an array
+    """Tests quickselect algorithm for finding the first k'th element in an array
        n times
-    '''    
+    """
 
     fail = False
 
     while n > 0 and not fail:
-
-        
         l = range(1,100)
         random.shuffle(l)
         l = l[:16]
@@ -197,9 +193,9 @@ def test_quickselect(n):
         n -= 1
 
     print_test('quickselect test', fail == False)
-    
-def pruebas_tiempo(n):
 
+
+def pruebas_tiempo(n):
     arr = range(n)
     random.shuffle(arr)
     t1 = clock()
@@ -230,8 +226,9 @@ def pruebas_tiempo(n):
     print "Tiempo heapselect: "+str(t_heapselect)+" resultado:"+str(res_heapselect)
     print "Tiempo quickselect: "+str(t_quickselect)+" resultado:"+str(res_quickselect)
 
+
 def main():
-    '''Runs all tests'''
+    """Runs all tests"""
     
     test_brute(10)
     test_order_and_select(10)
