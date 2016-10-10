@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #  -*- coding: utf-8 -*-
 from path import Path
-from heapq import heappop, heappush
+from heapq import heappop, heappush, heapify
 from digraph import Digraph, Edge
 
 
@@ -9,27 +9,24 @@ class Dijkstra(Path):
     """
     Algoritmo de Dijkstra
     """
-
     def _algorithm(self):
-        # heap inicializado con arista mentirosa
-        heap = [(None, Edge(self.src, self.src, weight=0))]
-
+        # heap inicializado con vertice origen
+        heap = [(0, self.src)]
+        for v in self.graph:
+            self.distances[v] = float("inf")
+	self.distances[self.src] = 0
         while heap and not self.tagged[self.dst]:
-            _, edge = heappop(heap)
-            if not self.tagged[edge.dst]: #y si mejora en cuanto a peso pero no la tiene en cuenta por esto? no estoy seguro pero despues en pruebas se vera esto
+			d, v = heappop(heap)
+                        self.tagged[v] = True
+			for e in self.graph.adj_e(v):
+				newDistance = self._priority(e)
+				if not self.tagged[e.dst] and (newDistance < self.distances[e.dst]):
+					self.distances[e.dst] = newDistance
+					self.edge_to[e.dst] = e
+                                        heappush(heap,(newDistance,e.dst))
+                                        
 
-                self.edge_to[edge.dst] = edge
-                self.distances[edge.dst] = self.distances.get(edge.src, 0) + edge.weight
-                self.tagged[edge.dst] = True
-
-                if edge.dst == self.dst:
-                    break
-
-                for next_edge in self.graph.adj_e(edge.dst):
-                    if not self.tagged[next_edge.dst]:
-                        heappush(heap, (self._priority(next_edge), next_edge))
-
-        self.edge_to.pop(self.src)  # borro la arista mentirosa
+		
 
     def _priority(self, edge):
         """
