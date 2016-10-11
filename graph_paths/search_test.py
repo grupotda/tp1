@@ -3,7 +3,7 @@ from bfs import Bfs
 from dijkstra import Dijkstra
 from heuristicsearch import HeuristicSearch
 from math_vectors import norm, vector
-
+from a_star import AStar
 def basic_test(Class):
     print Class, "test"
     graph = Digraph(7)
@@ -30,7 +30,7 @@ def basic_test(Class):
     # Path to root
     print "path to root is empty list:", search.path(0) == []
 
-def solve_trips(message, algorithm, graph, trips):
+def solve_trips(message, algorithm, graph, trips, heuristic = None):
 
     '''Runs 'Algorithm' for all trip of 'graph' in the list 'trips' 
        displaying 'message' at the start.
@@ -39,8 +39,11 @@ def solve_trips(message, algorithm, graph, trips):
     src = 0
     dst = 1
     for trip in trips:
-
-        search = algorithm(graph, trip[src], trip[dst])        
+        
+        if heuristic:
+            search = algorithm(graph, trip[src], trip[dst], heuristic)  
+        else:
+            search = algorithm(graph, trip[src], trip[dst])        
         print "Path from vertex "+str(trip[src])+" to vertex "+str(trip[dst])
         print "->".join(str(x) for x in search.vertex_path(trip[dst]))
         raw_input("\nEnter to solve next trip\n")
@@ -83,7 +86,7 @@ def manhattan_distance_test():
     '''Tests heuristic search algorithm using the manhattan distance as the heuristic
        function'''
 
-    print "***Heuristic test with manhattan distance\n***"
+    
     edges = [(0,1,2),(0,4,6),(0,3,1),(1,0,2),(1,4,7),(1,2,3),(2,1,3),(2,4,8),(2,5,1),
              (3,0,1),(3,4,5),(3,6,1),(4,0,6),(4,1,7),(4,2,8),(4,3,5),(4,5,9),(4,6,12),
              (4,7,11),(4,8,10),(5,4,9),(5,2,1),(5,8,1),(6,3,1),(6,4,12),(6,7,1),(7,6,1),
@@ -97,12 +100,8 @@ def manhattan_distance_test():
     for edge in edges:
         graph.add_edge(edge[src], edge[dst], edge[wgh])
     trips = [(0,1),(0,2),(0,3),(0,4),(0,5),(0,6),(0,7),(0,8),(4,0),(4,1),(4,8),(4,5)]
-    for trip in trips:
-
-        search = HeuristicSearch(graph, trip[src], trip[dst], manhattan_distance)        
-        print "Path from vertex "+str(trip[src])+" to vertex "+str(trip[dst])
-        print "->".join(str(x) for x in search.vertex_path(trip[dst]))
-        raw_input("\nEnter to solve next trip\n")
+    solve_trips('''Heuristic test(Manhattan distance (View Heuristic Diagrama.png)''', HeuristicSearch, graph, trips, manhattan_distance)    
+    solve_trips('''AStar with Manhattan distance (View Heuristic Diagrama.png)''', AStar, graph, trips, manhattan_distance)
 
 def main():
     basic_test(Bfs)
