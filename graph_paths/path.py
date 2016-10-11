@@ -11,7 +11,7 @@ class Path(object):
     """
     __metaclass__ = abc.ABCMeta
 
-    def __init__(self, graph, src, dst):
+    def __init__(self, graph, src, dst, heuristic = None):
         """
         :param graph: Grafo
         :param src: vertice origen
@@ -30,9 +30,9 @@ class Path(object):
         # distances = {vertex: sum(edge.weight for edge in path)}
         # INVARIANTE: distances[self.src] == 0
         self.distances = {}
-
+        self.h = heuristic
         self._algorithm()
-
+    
     @abc.abstractmethod
     def _algorithm(self):
         """
@@ -57,8 +57,8 @@ class Path(object):
         """
         if not self.visited(vertex):
             return float("inf")
-        else:
-            return self.distances[vertex]
+
+        return self.distances[vertex]
 
     def path(self, vertex):
         """
@@ -98,4 +98,3 @@ class Path(object):
             vertex = edge.src
         path.appendleft(vertex) # el origen
         return list(path)
-
