@@ -1,43 +1,35 @@
 #!/usr/bin/python
 #  -*- coding: utf-8 -*-
 from path import Path
-from heap import Heap
+from heapq import heappop, heappush
 from digraph import Digraph, Edge
 
-def compare(a,b):
-    if a[0] < b[0]:
-        return 1
-    if a[0] == b[0]:
-        return 0
-    return -1
 
 class Dijkstra(Path):
     """
     Algoritmo de Dijkstra
     """
+
     def _algorithm(self):
-        # heap inicializado con vertice origen
-        array = [(0, self.src)]
-        for v in self.graph:
-            self.distances[v] = float("inf")
-            if v != self.src:
-                array.append((float("inf"),v))
-        heap = Heap(compare, array)
-	self.distances[self.src] = 0
-        while not heap.empty() and not self.tagged[self.dst]:
-#                        print heap.datos
-			d, v = heap.dequeue()
- #                       print "*** VISITING VERTEX ", v, " ***"
-                        self.tagged[v] = True
-			for e in self.graph.adj_e(v):
-				newDistance = self._priority(e)
-				if not self.tagged[e.dst] and (newDistance < self.distances[e.dst]):
-					self.distances[e.dst] = newDistance
-					self.edge_to[e.dst] = e
-  #                                      print "edge ", e, " improves path to ", e.dst
-                                        heap.decreaseKey(newDistance, e.dst)
-   #                                     print "new heap: ", heap.datos
-		
+        # heap inicializado con arista mentirosa
+        heap = [(None, Edge(self.src, self.src, weight=0))]
+
+        while heap and not self.tagged[self.dst]:
+            _, edge = heappop(heap)
+            if not self.tagged[edge.dst]: #y si mejora en cuanto a peso pero no la tiene en cuenta por esto? no estoy seguro pero despues en pruebas se vera esto
+
+                self.edge_to[edge.dst] = edge
+                self.distances[edge.dst] = self.distances.get(edge.src, 0) + edge.weight
+                self.tagged[edge.dst] = True
+
+                if edge.dst == self.dst:
+                    break
+
+                for next_edge in self.graph.adj_e(edge.dst):
+                    if not self.tagged[next_edge.dst]:
+                        heappush(heap, (self._priority(next_edge), next_edge))
+
+        self.edge_to.pop(self.src)  # borro la arista mentirosa
 
     def _priority(self, edge):
         """
