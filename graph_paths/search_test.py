@@ -1,35 +1,31 @@
 from digraph import Digraph
 from bfs import Bfs
 from dijkstra import Dijkstra
-
+import timeit
+import random
 
 def basic_test(Class):
     print Class, "test"
     graph = Digraph(7)
 
-    graph.add_edge(0, 2, weight=1)
-    graph.add_edge(2, 3, weight=3)
-    graph.add_edge(2, 5, weight=1)
-    graph.add_edge(5, 6, weight=1)
-    graph.add_edge(0, 1, weight=2)
-    graph.add_edge(1, 3, weight=1)
-
+    for i in range(6):
+        l = range(i*100000,(i+1)*100000)
+        random.shuffle(l)
+        for j in l:
+            graph.add_edge(i,i+1, weight = j + 1)
+    start = timeit.default_timer()
     search = Class(graph, 0, 6)
 
-    # Valid path
-    print "vertex 6 was visited:", search.visited(6)
-    print "path to 6 is [0, 2, 5, 6]:", search.vertex_path(6) == [0, 2, 5, 6]
-    print "which is of length 3:", search.distance(6) == 3
-
-    # Unconnected vertex
-    print "path to 4 was not visited:", not search.visited(4)
-    print "path to 4 is None:", not search.vertex_path(4)
-    print "distance to 4 is inf:", search.distance(4) == float("inf")
-
-    # Path to root
-    print "path to root is empty list:", search.path(0) == []
-
-    print ""
+    end = timeit.default_timer()
+    print "total time: ", end - start
+    for i in range(7):
+        p = search.path(i)
+        print "path to ", i, " :"
+        if p:
+            for e in p:
+                print e
+        else:
+            print "None"
 
 
 basic_test(Bfs)

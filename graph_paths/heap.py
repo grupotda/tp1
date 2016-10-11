@@ -7,15 +7,6 @@ def division_techo(dividendo, divisor):
     return (dividendo + divisor / 2) / divisor
 
 
-def swap(array, p1, p2):
-    '''Intercambia los valores de la posicion 'p1' con 'p2' de la lista
-       'array' '''
-
-    aux = array[p1]
-    array[p1] = array[p2]
-    array[p2] = aux
-
-
 class Heap(object):
 
     def __init__(self, funcion_comparacion, Array=[]):
@@ -84,6 +75,7 @@ class Heap(object):
 
                 ultimo = self.datos.pop(self.cantidad_elementos - 1)
                 self.datos.insert(0, ultimo)
+                self.index[ultimo[1]]=0
                 self._downheap(0)
 
             return prioritario
@@ -131,7 +123,7 @@ class Heap(object):
 
     def decreaseKey(self, k, v):
         self.datos[self.index[v]] = (k, v)
-        self._downheap(self.index[v])
+        self._upheap(self.index[v])
 
 
 def heap_sort(arreglo, funcion_comparacion):
