@@ -49,7 +49,7 @@ def basic_test2():
        from different origins to different destinations 
     '''
     print "\n***BASIC TEST 2***\n"
-    edges = [(0,3,8), (0,2,2), (0,1,1), (2,5,3), (1,4,1), (3,6,9), (4,7,1), (5,7,3), (6,7,10), (7,5,1)]
+    edges = [(0,3,8), (0,2,2), (0,1,1), (2,5,3), (1,4,1), (3,6,9), (4,7,1), (5,7,3), (6,7,10), (7,5,1), (2,3,1), (4,6,1)]
     graph = Digraph(8)
     src = 0
     dst = 1
