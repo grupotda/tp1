@@ -9,10 +9,11 @@ def basic_test(Class):
     graph = Digraph(7)
 
     for i in range(6):
-        l = range(i*100000,(i+1)*100000)
+        l = range(i*1000000,(i+1)*1000000)
         random.shuffle(l)
         for j in l:
             graph.add_edge(i,i+1, weight = j + 1)
+    print "Graph generated, starting algorithm:", Class
     start = timeit.default_timer()
     search = Class(graph, 0, 6)
 
@@ -28,5 +29,5 @@ def basic_test(Class):
             print "None"
 
 
-basic_test(Bfs)
+#basic_test(Bfs)
 basic_test(Dijkstra)
