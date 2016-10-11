@@ -1,6 +1,7 @@
 from digraph import Digraph
 from bfs import Bfs
 from dijkstra import Dijkstra
+from heuristicsearch import HeuristicSearch
 
 def basic_test(Class):
     print Class, "test"
@@ -48,6 +49,8 @@ def basic_test2():
 
        from different origins to different destinations 
     '''
+    # def estandar de path:
+    heuristica = lambda g,o,d: HeuristicSearch(g, o, d, lambda u,v: 1) #ej: piensa que todo u esta a 1 de v
     print "\n***BASIC TEST 2***\n"
     edges = [(0,3,8), (0,2,2), (0,1,1), (2,5,3), (1,4,1), (3,6,9), (4,7,1), (5,7,3), (6,7,10), (7,5,1), (2,3,1), (4,6,1)]
     graph = Digraph(8)
@@ -59,6 +62,7 @@ def basic_test2():
     trips = [(0,1),(0,2),(0,3),(0,4),(0,5),(0,6),(0,7)]
     solve_trips("First run with BFS Algorithm\n", Bfs, graph, trips)
     solve_trips("Second run with Dijkstra Algorithm\n", Dijkstra, graph, trips) 
+    solve_trips("Third run with stupid Heuristic Algorithm\n", heuristica, graph, trips) 
 
 def main():
     basic_test(Bfs)
