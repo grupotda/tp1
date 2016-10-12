@@ -4,6 +4,7 @@ from dijkstra import Dijkstra
 from heuristicsearch import HeuristicSearch
 from math_vectors import norm, vector
 from a_star import AStar
+
 def basic_test(Class):
     print Class, "test"
     graph = Digraph(7)
@@ -30,7 +31,7 @@ def basic_test(Class):
     # Path to root
     print "path to root is empty list:", search.path(0) == []
 
-def solve_trips(message, algorithm, graph, trips, heuristic = None):
+def solve_trips(message, algorithm, graph, trips, heuristic = None, show_visited = False):
 
     '''Runs 'Algorithm' for all trip of 'graph' in the list 'trips' 
        displaying 'message' at the start.
@@ -46,7 +47,37 @@ def solve_trips(message, algorithm, graph, trips, heuristic = None):
             search = algorithm(graph, trip[src], trip[dst])        
         print "Path from vertex "+str(trip[src])+" to vertex "+str(trip[dst])
         print "->".join(str(x) for x in search.vertex_path(trip[dst]))
+        if show_visited:
+
+            visited_count = 0
+            for v in graph:
+
+                if search.visited(v):
+                    visited_count += 1
+            print "Total of vertex visited to solve trip: "+str(visited_count)
+           
         raw_input("\nEnter to solve next trip\n")
+
+def new_graph(E, v, digraph = False):
+    '''Returns graph with 'v' vertices and adds
+       all the edges in 'E'
+
+       PRE: 'E' is a list of tuples (u,v,w) with u, v valid vertices 
+       for the graph and w the weight of the edge connecting them.
+       'v' is a natural number.
+
+       POST: Returns a new digraph or not-directed graph.
+    '''
+
+    graph = Digraph(v)
+    src = 0
+    dst = 1
+    wgh = 2
+    for edge in E:
+        graph.add_edge(edge[src], edge[dst], edge[wgh])
+        if not digraph:
+            graph.add_edge(edge[dst], edge[src], edge[wgh])
+    return graph
 
 def basic_test2():
     '''Runs Bfs and Dijkstra algorithm from the graph basic_graph2.png
@@ -57,16 +88,12 @@ def basic_test2():
     heuristica = lambda g,o,d: HeuristicSearch(g, o, d, lambda u,v: 1) #ej: piensa que todo u esta a 1 de v
     print "\n***BASIC TEST 2***\n"
     edges = [(0,3,8), (0,2,2), (0,1,1), (2,5,3), (1,4,1), (3,6,9), (4,7,1), (5,7,3), (6,7,10), (7,5,1), (2,3,1), (4,6,1)]
-    graph = Digraph(8)
-    src = 0
-    dst = 1
-    wgh = 2
-    for edge in edges:
-        graph.add_edge(edge[src], edge[dst], edge[wgh])
+    graph = new_graph(edges, 8, True)
     trips = [(0,1),(0,2),(0,3),(0,4),(0,5),(0,6),(0,7)]
     solve_trips("First run with BFS Algorithm\n", Bfs, graph, trips)
     solve_trips("Second run with Dijkstra Algorithm\n", Dijkstra, graph, trips) 
     solve_trips("Third run with stupid Heuristic Algorithm\n", heuristica, graph, trips) 
+
 
 def manhattan_distance(v1, v2):
     '''Manhattan distance. View 'Heuristic test diagrama.png'
@@ -81,28 +108,53 @@ def manhattan_distance(v1, v2):
     d = vector(p1,p2) #vector director
     return norm(d)
 
+
+def manhattan_distance2(v1, v2):
+    '''Manhattan distance. View 'Heuristic test diagrama.png'
+    '''
+
+    points_space = {0:(1,4), 1:(2,4), 2:(3,4), 3:(4,4), 4:(1,3), 5:(2,3), 6:(3,3),
+                7:(4,3), 8:(1,2),9:(2,2), 10:(3,2), 11:(4,2), 12:(1,1), 13:(2,1),
+                14:(3,1), 15:(4,1) 
+               }
+    
+    p1 = points_space[v1]
+    p2 = points_space[v2]
+    d = vector(p1,p2) #vector director
+    return norm(d)
+
+
 def manhattan_distance_test():
 
     '''Tests heuristic search algorithm using the manhattan distance as the heuristic
        function'''
 
     
-    edges = [(0,1,2),(0,4,6),(0,3,1),(1,0,2),(1,4,7),(1,2,3),(2,1,3),(2,4,8),(2,5,1),
-             (3,0,1),(3,4,5),(3,6,1),(4,0,6),(4,1,7),(4,2,8),(4,3,5),(4,5,9),(4,6,12),
-             (4,7,11),(4,8,10),(5,4,9),(5,2,1),(5,8,1),(6,3,1),(6,4,12),(6,7,1),(7,6,1),
-             (7,4,11),(7,8,1),(8,5,1),(8,4,10),(8,7,1)
+    edges = [(0,1,2),(0,4,6),(0,3,1),(1,4,7),(1,2,3),(2,4,8),(2,5,1),
+             (3,4,5),(3,6,1),(4,5,9),(4,6,12),(4,7,11),(4,8,10),(5,8,1),(6,7,1),(7,8,1)
             ]
     
-    graph = Digraph(9)
-    src = 0
-    dst = 1
-    wgh = 2
-    for edge in edges:
-        graph.add_edge(edge[src], edge[dst], edge[wgh])
+    graph = new_graph(edges, 9)
     trips = [(0,1),(0,2),(0,3),(0,4),(0,5),(0,6),(0,7),(0,8),(4,0),(4,1),(4,8),(4,5)]
     solve_trips('''Heuristic test(Manhattan distance (View Heuristic Diagrama.png)''', HeuristicSearch, graph, trips, manhattan_distance)    
     solve_trips('''AStar with Manhattan distance (View Heuristic Diagrama.png)''', AStar, graph, trips, manhattan_distance)
 
+    print '''A more complex test'''
+   
+    edges = [(0,1,5),(0,5,3),(0,4,2.9),(1,4,1),(1,5,4),(1,6,5),(1,2,8),
+             (2,5,7),(2,6,5),(2,7,5),(2,3,2),(3,6,5),(3,7,1),(4,5,8),(4,9,5),(4,8,3), 
+             (5,9,2),(5,6,3),(5,10,10),(6,9,5),(6,10,3),(6,11,5),(6,7,4),(7,10,5),(7,11,1),
+             (8,9,4),(8,13,5),(8,12,4),(9,12,1),(9,13,1),(9,14,2),(9,10,3),(10,13,5),
+             (10,14,1),(10,15,1),(10,11,2),(11,14,5),(11,15,1),(12,13,2),(13,14,7),
+             (14,15,1)
+            ]
+    graph = new_graph(edges, 16)
+    trips = [(0,15)]
+    solve_trips('''Complex graph with Dijkstra''', Dijkstra, graph, trips,None,True)
+    solve_trips('''Heuristic test(Manhattan distance more compelx''', HeuristicSearch,\
+                                                graph, trips, manhattan_distance2,True)    
+    solve_trips('''AStar with Manhattan distance more complex''', AStar, graph, trips,\
+                                                             manhattan_distance2,True)
 def main():
     basic_test(Bfs)
     basic_test(Dijkstra)
