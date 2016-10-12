@@ -69,15 +69,15 @@ class Heap(object):
 
         try:
 
-            prioritario = self.datos.pop(0)
+            ultimo = self.datos.pop()
             self.cantidad_elementos -= 1
             if len(self.datos):
-
-                ultimo = self.datos.pop(self.cantidad_elementos - 1)
-                self.datos.insert(0, ultimo)
+                prioritario = self.datos[0]
+                self.datos[0] = ultimo
                 self.index[ultimo[1]]=0
                 self._downheap(0)
-
+            else:
+                prioritario = ultimo
             return prioritario
         except IndexError:
 

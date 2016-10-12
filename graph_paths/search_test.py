@@ -69,4 +69,4 @@ def compareDijkstra(v,e,t):
 #compareDijkstra(10000,10,10)
 #compareDijkstra(10000,50,10)
 #compareDijkstra(10000,100,10)
-compareDijkstra(2000,800000,20)
+compareDijkstra(500,250000,20)

@@ -3,7 +3,13 @@
 from path import Path
 from heapq import heappop, heappush
 from digraph import Digraph, Edge
-
+from heap import Heap
+def compare(a,b):
+    if a[0] == b[0]:
+        return 0
+    if a[0] < b[0]:
+        return 1
+    return -1
 
 class Dijkstra(Path):
     """
@@ -12,10 +18,10 @@ class Dijkstra(Path):
 
     def _algorithm(self):
         # heap inicializado con arista mentirosa
-        heap = [(None, Edge(self.src, self.src, weight=0))]
-
-        while heap and not self.tagged[self.dst]:
-            _, edge = heappop(heap)
+        array = [(None, Edge(self.src, self.src, weight=0))]
+        heap = Heap(compare, array)
+        while not heap.empty() and not self.tagged[self.dst]:
+            _, edge = heap.dequeue()
             if not self.tagged[edge.dst]: #y si mejora en cuanto a peso pero no la tiene en cuenta por esto? no estoy seguro pero despues en pruebas se vera esto
 
                 self.edge_to[edge.dst] = edge
@@ -27,7 +33,7 @@ class Dijkstra(Path):
 
                 for next_edge in self.graph.adj_e(edge.dst):
                     if not self.tagged[next_edge.dst]:
-                        heappush(heap, (self._priority(next_edge), next_edge))
+                        heap.enqueue((self._priority(next_edge),next_edge))
 
         self.edge_to.pop(self.src)  # borro la arista mentirosa
 
