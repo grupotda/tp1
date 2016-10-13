@@ -1,8 +1,7 @@
 #!/usr/bin/python
 #  -*- coding: utf-8 -*-
 from path import Path
-from heapq import heappop, heappush
-from digraph import Digraph, Edge
+from indexed_heap import IndexedHeap
 
 
 class Dijkstra(Path):
@@ -11,25 +10,29 @@ class Dijkstra(Path):
     """
 
     def _algorithm(self):
-        # heap inicializado con arista mentirosa
-        heap = [(None, Edge(self.src, self.src, weight=0))]
+        # heap inicializado con vertice origen
+        heap = IndexedHeap()
+        heap._push(self.src, 0)
+        self.distances[self.src] = 0
+        while heap:
+            v = heap.pop()
+            self.tagged[v] = True
 
-        while heap and not self.tagged[self.dst]:
-            _, edge = heappop(heap)
-            if not self.tagged[edge.dst]:
+            if v == self.dst:
+                break
 
-                self.edge_to[edge.dst] = edge
-                self.distances[edge.dst] = self.distances.get(edge.src, 0) + edge.weight
-                self.tagged[edge.dst] = True
-
-                if edge.dst == self.dst:
-                    break
-
-                for next_edge in self.graph.adj_e(edge.dst):
-                    if not self.tagged[next_edge.dst]:
-                        heappush(heap, (self._priority(next_edge), next_edge))
-
-        self.edge_to.pop(self.src)  # borro la arista mentirosa
+            for e in self.graph.adj_e(v):
+                if not self.tagged[e.dst]:
+                    new_priority = self._priority(e)
+                    if e.dst in heap:
+                        if new_priority < heap[e.dst]:
+                            self.distances[e.dst] = self.distances[e.src] + e.weight
+                            self.edge_to[e.dst] = e
+                            heap._decreaseKey(e.dst, new_priority)
+                    else:
+                        self.distances[e.dst] = self.distances[e.src] + e.weight
+                        self.edge_to[e.dst] = e
+                        heap._push(e.dst, new_priority)
 
     def _priority(self, edge):
         """

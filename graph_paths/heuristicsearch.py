@@ -19,8 +19,9 @@ class HeuristicSearch(Dijkstra):
         Nota: Se recomienda un metodo ligado a un objeto, para que el objeto
         contenga informacion externa
         """
-        super(HeuristicSearch, self).__init__(graph, src, dst)
         self.h = heuristic
+        super(HeuristicSearch, self).__init__(graph, src, dst)
+
 
     def _priority(self, edge):
         """
