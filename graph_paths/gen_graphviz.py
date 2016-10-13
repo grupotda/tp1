@@ -5,22 +5,27 @@ from bfs import Bfs
 from dijkstra import Dijkstra
 from heuristicsearch import HeuristicSearch
 from a_star import AStar
+from random import randint
 
 # informacion de posicion de vertices
 # Para la heuristica y para posicion fija en el dibujo
-vertices = [
-    (0, 0),
-    (1, 0),
-    (-1, -1),
-    (0, 1),
-    (1, 2),
-    (0, 2),
-    (-1, 2)
-]
+
+#para una grilla:
+FILAS = 5
+COLUMNAS = 5
+
+vertices = []
+for f in xrange(FILAS):
+    vertices += [(f, y) for y in xrange(COLUMNAS)]
 
 ORIGEN = 0
-DESTINO = 6
+DESTINO = len(vertices) - 1
 
+aristas = \
+    [(a,a+1,randint(1,5)) for a in xrange(len(vertices)) if (a+1) % COLUMNAS != 0] \
+    + [(a,a+COLUMNAS,randint(1,5)) for a in xrange(len(vertices)-COLUMNAS)]
+
+"""
 aristas = [
     (0, 2, 10),
     (0, 1, 20),
@@ -28,19 +33,28 @@ aristas = [
     (4, 3, 3),
     (3, 5, 5),
     (5, 6, 1)
-]
+]"""
+
+class ManhattanDistance(object):
+    def __init__(self, posiciones):
+        self.pos = posiciones
+
+    def distance(self, x, y):
+        return abs(self.pos[x][0] - self.pos[y][0]) + abs(self.pos[x][1] - self.pos[y][1])
+
 
 # llamada estandar de (grafo, src, dst)
 algoritmos = [
     Bfs,
-    Dijkstra
-    #HeuristicSearch
+    Dijkstra,
+    lambda g,s,d: HeuristicSearch(g,s,d, ManhattanDistance(vertices).distance)
     #AStar
 ]
 
 nombres_alg = [
     "BFS",
-    "Dijkstra"
+    "Dijkstra",
+    "Heuristic: Manhattan Distance"
 ]
 
 COLOR_CAMINO = "\"green3\""
