@@ -19,7 +19,7 @@ class HeuristicSearch(Dijkstra):
         Nota: Se recomienda un metodo ligado a un objeto, para que el objeto
         contenga informacion externa
         """
-        self.h = heuristic
+        self.h = heuristic  # Porque el algoritmo se ejecuta en __init__
         super(HeuristicSearch, self).__init__(graph, src, dst)
 
 
@@ -27,5 +27,4 @@ class HeuristicSearch(Dijkstra):
         """
         Ver Dijkstra
         """
-        # return self.h(graph, self.src, self.dst, edge) NO DEBERIA SER NECESARIO
         return self.h(edge.dst, self.dst)
