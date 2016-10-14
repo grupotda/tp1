@@ -20,7 +20,6 @@ class IndexedHeap(object):
         self.index = {self.heap[i][1]: i for i in xrange(len(self.heap))}
 
     def __nonzero__(self):
-        assert len(self.heap) == len(self.index)
         return bool(self.heap)
 
     def __contains__(self, item):

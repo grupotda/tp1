@@ -104,4 +104,4 @@ class Path(object):
             path.appendleft(edge.dst)
             vertex = edge.src
         path.appendleft(vertex) # el origen
-        return list(path
+        return list(path)

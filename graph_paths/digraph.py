@@ -20,18 +20,6 @@ class Edge:
     def __str__(self):
         return "%d-%d->%d" % (self.src, self.weight, self.dst)
 
-    def get_weight(self):
-        """
-        :return: Peso de la arista
-        """
-        return self.weight
-
-    def get_dst(self):
-        """
-        :return: Destino de la arista
-        """
-        return self.dst
-
 
 class Digraph:
     """
@@ -50,7 +38,6 @@ class Digraph:
         Construye un grafo sin aristas de V vertices.
         :param V: cantidad de vertices
         """
-        # fijarse pasar a lazy initialization
         self.vertices = [[] for _ in xrange(V)]
 
     def V(self):
@@ -90,6 +77,7 @@ class Digraph:
         :param dst: el vertice destino, debe pertenecer al grafo.
         :param weight: el peso asociado a la arista.
         """
+        if dst >= self.V(): raise IndexError("Vertice desconocido")
         self.vertices[src].append(Edge(src, dst, weight))
 
     def __iter__(self):
