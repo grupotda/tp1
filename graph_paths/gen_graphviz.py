@@ -5,7 +5,7 @@ from bfs import Bfs
 from dijkstra import Dijkstra
 from heuristicsearch import HeuristicSearch
 from a_star import AStar
-from random import randint
+from random import randint, uniform
 
 # informacion de posicion de vertices
 # Para la heuristica y para posicion fija en el dibujo
@@ -13,6 +13,8 @@ from random import randint
 #para una grilla:
 FILAS = 5
 COLUMNAS = 5
+PESO = lambda : randint(1,5)
+#PESO = lambda : uniform(0.1,0.3)
 
 vertices = []
 for f in xrange(FILAS):
@@ -22,8 +24,8 @@ ORIGEN = 0
 DESTINO = len(vertices) - 1
 
 aristas = \
-    [(a,a+1,randint(1,5)) for a in xrange(len(vertices)) if (a+1) % COLUMNAS != 0] \
-    + [(a,a+COLUMNAS,randint(1,5)) for a in xrange(len(vertices)-COLUMNAS)]
+    [(a,a+1,PESO()) for a in xrange(len(vertices)) if (a+1) % COLUMNAS != 0] \
+    + [(a,a+COLUMNAS,PESO()) for a in xrange(len(vertices)-COLUMNAS)]
 
 """
 aristas = [
@@ -42,24 +44,33 @@ class ManhattanDistance(object):
     def distance(self, x, y):
         return abs(self.pos[x][0] - self.pos[y][0]) + abs(self.pos[x][1] - self.pos[y][1])
 
+class RealDistance(object):
+    """Uso Dijkstra para sacar distancia real, emulando h(u,v) == R(u,v)"""
+    def __init__(self, grafo, posiciones):
+        self.g = grafo
+        self.pos = posiciones
+
+    def distance(self, x, y):
+        return Dijkstra(self.g, x, y).distance(y)
 
 # llamada estandar de (grafo, src, dst)
 algoritmos = [
     Bfs,
     Dijkstra,
-    lambda g,s,d: HeuristicSearch(g,s,d, ManhattanDistance(vertices).distance)
-    #AStar
+    lambda g,s,d: HeuristicSearch(g,s,d, ManhattanDistance(vertices).distance),
+    lambda g,s,d: AStar(g,s,d, ManhattanDistance(vertices).distance)
 ]
 
 nombres_alg = [
     "BFS",
     "Dijkstra",
-    "Heuristic: Manhattan Distance"
+    "Heuristica: Dist. Manhattan",
+    "A*: Dist. Manhattan"
 ]
 
 COLOR_CAMINO = "\"green3\""
 COLOR_NO_CAMINO = "\"red3\""
-NOMBRE_ARCH_SUFIJO = "grafo1.txt"
+NOMBRE_ARCH_SUFIJO = "grafo_dist_reales.txt"
 
 assert 0 <= ORIGEN < len(vertices)
 assert 0 <= DESTINO < len(vertices)
@@ -101,7 +112,9 @@ for j in xrange(len(paths)):
             edge_atts[tuple_edge] = {"color": COLOR_CAMINO}
 
     #Escribimos el archivo
-    nombre_salida = nombres_alg[j]+"_"+NOMBRE_ARCH_SUFIJO
+    dist =  alg.distance(DESTINO)
+    dist_s = "d%d" % dist if type(dist) == int else "d%.3f" % dist
+    nombre_salida = nombres_alg[j]+"_"+dist_s+"_"+NOMBRE_ARCH_SUFIJO
     with open(nombre_salida, "w") as salida:
         salida.write("Digraph G {\n")
         salida.write("\toverlap = scale;\n")
