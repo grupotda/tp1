@@ -3,10 +3,8 @@ from heap import Heap
 
 def heap_select(heap_comparison, comparison_function, array, k):
 
-    heap = Heap(heap_comparison)
     length = len(array)
-    for i in range(k+1):  # Agrego los primeros k elementos al heap; + 1 porque k >= 0
-        heap.enqueue(array[i])
+    heap = Heap(heap_comparison, array[0:k + 1])  # heapify de los 1eros k elementos
         
     for x in range(k + 1, length):
         element = heap.view_first()
