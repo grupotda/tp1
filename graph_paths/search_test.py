@@ -44,7 +44,9 @@ def solve_trips(message, algorithm, graph, trips, heuristic = None, show_visited
         if heuristic:
             search = algorithm(graph, trip[src], trip[dst], heuristic)  
         else:
-            search = algorithm(graph, trip[src], trip[dst])        
+            search = algorithm(graph, trip[src], trip[dst]) 
+
+        raw_input("\nEnter to solve next trip\n")       
         print "Path from vertex "+str(trip[src])+" to vertex "+str(trip[dst])
         print "->".join(str(x) for x in search.vertex_path(trip[dst]))
         if show_visited:
@@ -56,8 +58,7 @@ def solve_trips(message, algorithm, graph, trips, heuristic = None, show_visited
                     visited_count += 1
             print "Total of vertex visited to solve trip: "+str(visited_count)
            
-        raw_input("\nEnter to solve next trip\n")
-
+        
 def new_graph(E, v, digraph = False):
     '''Returns graph with 'v' vertices and adds
        all the edges in 'E'
@@ -90,9 +91,9 @@ def basic_test2():
     edges = [(0,3,8), (0,2,2), (0,1,1), (2,5,3), (1,4,1), (3,6,9), (4,7,1), (5,7,3), (6,7,10), (7,5,1), (2,3,1), (4,6,1)]
     graph = new_graph(edges, 8, True)
     trips = [(0,1),(0,2),(0,3),(0,4),(0,5),(0,6),(0,7)]
-    solve_trips("First run with BFS Algorithm\n", Bfs, graph, trips)
-    solve_trips("Second run with Dijkstra Algorithm\n", Dijkstra, graph, trips) 
-    solve_trips("Third run with stupid Heuristic Algorithm\n", heuristica, graph, trips) 
+    solve_trips("First run with BFS Algorithm (basic_graph2.png)", Bfs, graph, trips)
+    solve_trips("\nSecond run with Dijkstra Algorithm (basic_graph2.png)", Dijkstra, graph, trips) 
+    solve_trips("\nThird run with stupid Heuristic Algorithm (basic_graph2.png)", heuristica, graph, trips) 
 
 
 def manhattan_distance(v1, v2):
@@ -136,11 +137,9 @@ def manhattan_distance_test():
     
     graph = new_graph(edges, 9)
     trips = [(0,1),(0,2),(0,3),(0,4),(0,5),(0,6),(0,7),(0,8),(4,0),(4,1),(4,8),(4,5)]
-    solve_trips('''Heuristic test(Manhattan distance (View Heuristic Diagrama.png)''', HeuristicSearch, graph, trips, manhattan_distance)    
-    solve_trips('''AStar with Manhattan distance (View Heuristic Diagrama.png)''', AStar, graph, trips, manhattan_distance)
+    solve_trips('''Heuristic test w/Manhattan distance (Heuristic test diagrama.png)''', HeuristicSearch, graph, trips, manhattan_distance)    
+    solve_trips('''\nAStar w/Manhattan distance (Heuristic test diagrama.png)''', AStar, graph, trips, manhattan_distance)
 
-    print '''A more complex test'''
-   
     edges = [(0,1,5),(0,5,3),(0,4,2.9),(1,4,1),(1,5,4),(1,6,5),(1,2,8),
              (2,5,7),(2,6,5),(2,7,5),(2,3,2),(3,6,5),(3,7,1),(4,5,8),(4,9,5),(4,8,3), 
              (5,9,2),(5,6,3),(5,10,10),(6,9,5),(6,10,3),(6,11,5),(6,7,4),(7,10,5),(7,11,1),
@@ -150,15 +149,19 @@ def manhattan_distance_test():
             ]
     graph = new_graph(edges, 16)
     trips = [(0,15)]
-    solve_trips('''Complex graph with Dijkstra''', Dijkstra, graph, trips,None,True)
-    solve_trips('''Heuristic test(Manhattan distance more compelx''', HeuristicSearch,\
+    solve_trips('''Dijkstra test (Grafo del informe))''', Dijkstra, graph, trips,None,True)
+    solve_trips('''Heuristic test (Grafo del informe)''', HeuristicSearch,\
                                                 graph, trips, manhattan_distance2,True)    
-    solve_trips('''AStar with Manhattan distance more complex''', AStar, graph, trips,\
+    solve_trips('''AStar with Manhattan distance more complex (Grilla 2.png)''', AStar, graph, trips,\
                                                              manhattan_distance2,True)
 def main():
+
     basic_test(Bfs)
+    raw_input("\nEnter for next test\n")
     basic_test(Dijkstra)
+    raw_input("\nEnter for next test")
     basic_test2()
+    raw_input("\nEnter for next test\n")
     manhattan_distance_test()
 
 main()
