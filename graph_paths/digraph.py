@@ -3,11 +3,16 @@
 
 class Edge:
     """
-    DOC
+    Arista de un grafo
     """
 
     def __init__(self, src, dst, weight):
-        """"""
+        """
+        Construye una arista de un grafo
+        :param src: vertice de origen de la arista
+        :param dst: vertice al que esta destinado la arista
+        :param weight: peso de la arista
+        """
         self.src = src
         self.dst = dst
         self.weight = weight
@@ -16,15 +21,28 @@ class Edge:
         return "%d-%d->%d" % (self.src, self.weight, self.dst)
 
     def get_weight(self):
+        """
+        :return: Peso de la arista
+        """
         return self.weight
 
     def get_dst(self):
+        """
+        :return: Destino de la arista
+        """
         return self.dst
 
 
 class Digraph:
     """
-    DOC
+    Grafo no dirigido con un número fijo de vértices.
+
+    Los vértices son siempre números enteros no negativos. El primer vértice
+    es 0.
+
+    El grafo se crea vacío, se añaden las aristas con add_edge(). Una vez
+    creadas, las aristas no se pueden eliminar, pero siempre se puede añadir
+    nuevas aristas.
     """
 
     def __init__(self, V):
