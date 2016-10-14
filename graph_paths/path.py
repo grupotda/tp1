@@ -83,8 +83,15 @@ class Path(object):
         return list(path)
 
     def vertex_path(self, vertex):
-        """Returns list with the path of vertices found to vertex, none if there is
-         no such path, or an empty list if vertex is the root"""
+        """
+        Devuele una lista de vertices que comprenden el camino de
+        origen hasta el vertice pasado por parametro.
+        :param vertex: vertice destino
+        :return: [Vertex_0, ..., Vertex_N], donde:
+        Vertex_0 = vertice origen
+        Vertex_N = vertice parametro.
+        None si no habia camino, [] si vertex era el origen.
+        """
         if not self.visited(vertex):
             return None
         if vertex == self.src:
@@ -97,5 +104,4 @@ class Path(object):
             path.appendleft(edge.dst)
             vertex = edge.src
         path.appendleft(vertex) # el origen
-        return list(path)
-
+        return list(path
